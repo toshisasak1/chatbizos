@@ -47,7 +47,7 @@ The result is not just a chat response. It is a working repository of decisions 
 - Discord and Slack support
 - OpenAI, Anthropic, and local LLM support
 - a workspace template for strategy, research, growth, implementation, and validation
-- cron-driven morning briefings, nightly reviews, and weekly progress reports
+- Gateway cron templates plus a registration script for morning briefings, nightly reviews, and weekly progress reports
 - editable `SOUL.md` files for each agent
 - Docker-based local deployment
 
@@ -79,9 +79,10 @@ cd chatbizos
 cp .env.example .env
 # Edit .env with your LLM and chat credentials
 docker compose up -d
+./setup/register-cron.sh
 ```
 
-After the container starts, send a message in your configured Discord or Slack channel.
+After the container starts, register the scheduled jobs once, then send a message in your configured Discord or Slack channel.
 
 ## Guided Setup
 
@@ -94,6 +95,7 @@ If you prefer prompts instead of editing `.env` manually:
 Then validate the environment:
 
 ```bash
+./setup/register-cron.sh
 ./setup/validate.sh
 ```
 

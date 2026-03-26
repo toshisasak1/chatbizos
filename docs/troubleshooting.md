@@ -7,6 +7,7 @@ Check:
 - whether port `18789` is already in use
 - whether your generated config is valid
 - whether `openclaw` was installed correctly in the image
+- whether `OPENCLAW_GATEWAY_TOKEN` is present in `.env`
 
 ## Discord Bot Not Responding
 
@@ -41,6 +42,14 @@ Check:
 - whether the relevant `SOUL.md` was deployed
 - whether Producer is delegating clear tasks
 - whether the request requires human confirmation before progress can continue
+
+## Scheduled Jobs Not Running
+
+Check:
+- whether you ran `./setup/register-cron.sh` after the gateway started
+- whether `./setup/validate.sh` reports registered cron jobs
+- whether the container can reach the configured gateway on port `18789`
+- whether the active Discord or Slack channel ID is set in `.env`
 
 ## Workspace Files Not Updating
 

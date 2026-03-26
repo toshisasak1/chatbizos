@@ -2,10 +2,10 @@
 project:
   name: "My Business"
   description: ""
-  timezone: "${TIMEZONE:-UTC}"
+  timezone: "UTC"
 
 llm:
-  default: "${LLM_PROVIDER:-openai}"
+  default: "openai"
   providers:
     openai:
       auth: api_key
@@ -14,42 +14,50 @@ llm:
       auth: api_key
       model: claude-sonnet-4-5-20250929
     local:
-      endpoint: "${LOCAL_LLM_ENDPOINT:-http://localhost:11434}"
+      endpoint: "http://localhost:11434"
       model: llama3
 
 agents:
   producer:
     default: true
-    model: "${LLM_PROVIDER:-openai}"
+    model: "openai"
   concept:
-    model: "${LLM_PROVIDER:-openai}"
+    model: "openai"
   conversation:
-    model: "${LLM_PROVIDER:-openai}"
+    model: "openai"
   builder:
-    model: "${LLM_PROVIDER:-openai}"
+    model: "openai"
   compliance:
-    model: "${LLM_PROVIDER:-openai}"
+    model: "openai"
 
 channels:
+  active: "discord"
   discord:
-    enabled: "${CHAT_CHANNEL:-discord}"
-    bot_token: "${DISCORD_BOT_TOKEN}"
-    guild_id: "${DISCORD_GUILD_ID}"
-    channel_id: "${DISCORD_CHANNEL_ID}"
+    enabled: true
+    env:
+      bot_token: DISCORD_BOT_TOKEN
+      guild_id: DISCORD_GUILD_ID
+      channel_id: DISCORD_CHANNEL_ID
   slack:
     enabled: false
-    bot_token: "${SLACK_BOT_TOKEN}"
-    app_token: "${SLACK_APP_TOKEN}"
-    channel_id: "${SLACK_CHANNEL_ID}"
+    env:
+      bot_token: SLACK_BOT_TOKEN
+      app_token: SLACK_APP_TOKEN
+      channel_id: SLACK_CHANNEL_ID
 
 cron:
   morning_briefing:
     schedule: "0 9 * * *"
-    timezone: "${TIMEZONE:-UTC}"
+    timezone: "UTC"
     agent: producer
     message: "Generate morning briefing. Read STATUS.md and task_queue.md, summarize progress, identify blockers, and recommend today's priorities."
   nightly_review:
     schedule: "0 3 * * *"
-    timezone: "${TIMEZONE:-UTC}"
+    timezone: "UTC"
     agent: producer
     message: "Run nightly meta review. Check all agent session histories, identify improvements, update LEARNINGS.md."
+  weekly_progress_report:
+    schedule: "0 10 * * 1"
+    timezone: "UTC"
+    agent: producer
+    message: "Generate the weekly progress report. Summarize completed milestones, open blockers, risks, and next week's priorities."

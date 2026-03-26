@@ -58,7 +58,7 @@ cd chatbizos
 ./setup/setup.sh
 ```
 
-The wizard asks for your provider, key, chat channel, channel credentials, and timezone. It writes a `.env` file for you.
+The wizard asks for your provider, key, chat channel, channel credentials, and timezone. It also writes a gateway token into `.env` for you.
 
 ## 6. Start with Docker Compose
 
@@ -68,16 +68,24 @@ docker compose up -d
 
 This builds the container, prepares the workspace, generates the OpenClaw config, and starts the gateway.
 
-## 7. First Conversation with the Bot
+## 7. Register Scheduled Jobs
+
+```bash
+./setup/register-cron.sh
+```
+
+This installs the morning, nightly, and weekly jobs into the OpenClaw Gateway scheduler.
+
+## 8. First Conversation with the Bot
 
 Open your configured Discord or Slack channel and send a simple message such as:
-- “I want to start a handmade candle business.”
-- “Help me validate a consulting offer.”
-- “I have an idea for a niche SaaS product.”
+- "I want to start a handmade candle business."
+- "Help me validate a consulting offer."
+- "I have an idea for a niche SaaS product."
 
 The Producer agent should start organizing the work and clarifying what matters first.
 
-## 8. Understanding the Workspace
+## 9. Understanding the Workspace
 
 The `workspace/` directory is where business progress is stored.
 
@@ -88,11 +96,12 @@ Important files:
 - `06_operations/decision_log.md` - key decisions
 - `07_validation/compliance_log.md` - risk notes and required review
 
-## 9. Common Issues and Fixes
+## 10. Common Issues and Fixes
 
 ### Container starts but the bot does not respond
 - Check your `.env` values.
 - Confirm the bot has access to the target channel.
+- Run `./setup/validate.sh` to confirm channel and cron status.
 - Review `docs/troubleshooting.md`.
 
 ### The workspace is empty

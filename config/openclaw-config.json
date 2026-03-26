@@ -1,63 +1,134 @@
 {
   "gateway": {
-    "bind": "0.0.0.0",
-    "port": 18789
-  },
-  "runtime": {
-    "toolProfile": "full",
-    "agentToAgent": true
-  },
-  "memory": {
-    "search": {
-      "fts": true
+    "mode": "local",
+    "bind": "lan",
+    "port": 18789,
+    "auth": {
+      "mode": "token",
+      "token": "change-this-gateway-token"
     }
   },
-  "plugins": {
-    "entries": {
-      "discord": {
-        "enabled": true,
-        "botToken": "${DISCORD_BOT_TOKEN}",
-        "guildId": "${DISCORD_GUILD_ID}",
-        "channelId": "${DISCORD_CHANNEL_ID}"
+  "tools": {
+    "profile": "full",
+    "agentToAgent": {
+      "enabled": true,
+      "allow": ["producer", "concept", "conversation", "builder", "compliance"]
+    },
+    "sessions": {
+      "visibility": "all"
+    }
+  },
+  "session": {
+    "agentToAgent": {
+      "maxPingPongTurns": 3
+    }
+  },
+  "cron": {
+    "enabled": true,
+    "sessionRetention": "24h"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openai/gpt-4o"
+      }
+    },
+    "list": [
+      {
+        "id": "producer",
+        "name": "Producer",
+        "default": true,
+        "workspace": "/opt/chatbizos/.openclaw/workspaces/producer",
+        "agentDir": "/opt/chatbizos/.openclaw/agents/producer/agent",
+        "model": "openai/gpt-4o",
+        "identity": {
+          "name": "Producer"
+        }
       },
-      "slack": {
-        "enabled": false,
-        "botToken": "${SLACK_BOT_TOKEN}",
-        "appToken": "${SLACK_APP_TOKEN}",
-        "channelId": "${SLACK_CHANNEL_ID}"
+      {
+        "id": "concept",
+        "name": "Concept",
+        "workspace": "/opt/chatbizos/.openclaw/workspaces/concept",
+        "agentDir": "/opt/chatbizos/.openclaw/agents/concept/agent",
+        "model": "openai/gpt-4o",
+        "identity": {
+          "name": "Concept"
+        }
+      },
+      {
+        "id": "conversation",
+        "name": "Conversation",
+        "workspace": "/opt/chatbizos/.openclaw/workspaces/conversation",
+        "agentDir": "/opt/chatbizos/.openclaw/agents/conversation/agent",
+        "model": "openai/gpt-4o",
+        "identity": {
+          "name": "Conversation"
+        }
+      },
+      {
+        "id": "builder",
+        "name": "Builder",
+        "workspace": "/opt/chatbizos/.openclaw/workspaces/builder",
+        "agentDir": "/opt/chatbizos/.openclaw/agents/builder/agent",
+        "model": "openai/gpt-4o",
+        "identity": {
+          "name": "Builder"
+        }
+      },
+      {
+        "id": "compliance",
+        "name": "Compliance",
+        "workspace": "/opt/chatbizos/.openclaw/workspaces/compliance",
+        "agentDir": "/opt/chatbizos/.openclaw/agents/compliance/agent",
+        "model": "openai/gpt-4o",
+        "identity": {
+          "name": "Compliance"
+        }
+      }
+    ]
+  },
+  "channels": {
+    "defaults": {
+      "groupPolicy": "allowlist"
+    },
+    "discord": {
+      "enabled": true,
+      "token": "your-discord-bot-token",
+      "dmPolicy": "pairing",
+      "groupPolicy": "allowlist",
+      "historyLimit": 20,
+      "threadBindings": {
+        "enabled": true,
+        "idleHours": 24,
+        "maxAgeHours": 0,
+        "spawnSubagentSessions": true
+      },
+      "guilds": {
+        "your-discord-guild-id": {
+          "requireMention": false,
+          "channels": {
+            "your-discord-channel-id": {
+              "allow": true,
+              "requireMention": false
+            }
+          }
+        }
+      }
+    },
+    "slack": {
+      "enabled": false,
+      "botToken": "xoxb-your-slack-bot-token",
+      "appToken": "xapp-your-slack-app-token",
+      "dmPolicy": "pairing",
+      "groupPolicy": "allowlist",
+      "historyLimit": 50,
+      "channels": {
+        "your-slack-channel-id": {
+          "allow": true,
+          "requireMention": false,
+          "allowBots": false
+        }
       }
     }
-  },
-  "agents": [
-    {
-      "id": "producer",
-      "label": "Producer",
-      "workspace": "/opt/chatbizos/workspace",
-      "soul": "/opt/chatbizos/agents/producer/SOUL.md"
-    },
-    {
-      "id": "concept",
-      "label": "Concept",
-      "workspace": "/opt/chatbizos/workspace",
-      "soul": "/opt/chatbizos/agents/concept/SOUL.md"
-    },
-    {
-      "id": "conversation",
-      "label": "Conversation",
-      "workspace": "/opt/chatbizos/workspace",
-      "soul": "/opt/chatbizos/agents/conversation/SOUL.md"
-    },
-    {
-      "id": "builder",
-      "label": "Builder",
-      "workspace": "/opt/chatbizos/workspace",
-      "soul": "/opt/chatbizos/agents/builder/SOUL.md"
-    },
-    {
-      "id": "compliance",
-      "label": "Compliance",
-      "workspace": "/opt/chatbizos/workspace",
-      "soul": "/opt/chatbizos/agents/compliance/SOUL.md"
-    }
-  ]
+  }
 }
