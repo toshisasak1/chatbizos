@@ -1,42 +1,101 @@
 # ChatBizOS
 
-[English](README.md) | [日本語](README.ja.md)
+[English](README.md) | [Japanese](README.ja.md)
 
-ChatBizOS is an open-source multi-agent business building framework built on OpenClaw. It gives non-technical entrepreneurs a pre-configured AI team they can talk to through Discord or Slack. The team helps turn a business idea into strategy, content, implementation plans, and structured progress.
+ChatBizOS is an OpenClaw-based multi-agent system for people who want to build a business through chat instead of managing everything manually across docs, notes, and disconnected AI sessions.
 
-## What is ChatBizOS
+You talk to one AI team in Discord or Slack. That team turns rough ideas into business strategy, research, positioning, content plans, implementation steps, and risk reviews, then stores the work in a structured workspace you can actually inspect.
 
-ChatBizOS packages five specialized agents into a single workflow:
-- **Producer** orchestrates the work and keeps progress visible.
-- **Concept** designs the business strategy.
-- **Conversation** creates messaging and growth assets.
-- **Builder** defines practical implementation steps.
-- **Compliance** flags legal and platform risks.
+## Why It Exists
 
-The result is a workspace of structured markdown files that shows what has been decided, what is being worked on, and what needs human approval.
+Most people trying to build with AI still have to do the orchestration themselves:
 
-## Features
+- move context between chat threads
+- repeat decisions every session
+- keep strategy, content, and execution in sync
+- remember what still needs human approval
 
-- Pre-configured 5-agent business creation team
-- Discord and Slack support for chat-based workflows
-- OpenAI, Anthropic, and local LLM configuration
-- Workspace template for strategy, research, growth, implementation, and validation
-- Cron-based morning briefing, nightly review, and weekly progress reporting
-- Agent SOUL.md files designed for domain-agnostic business building
-- Setup wizard for generating `.env` configuration
+ChatBizOS packages that operating layer into a reusable system.
+
+## Who It Is For
+
+- non-technical founders
+- solo operators
+- consultants building offers from scratch
+- creators validating a product idea
+- small teams that want a chat-first operating workflow
+
+## What Happens After Your First Message
+
+Example first message:
+
+> "I want to start a handmade candle business."
+
+What ChatBizOS does next:
+
+1. Producer clarifies the goal, constraints, and current stage.
+2. Concept drafts the business model, ICP, pricing options, and positioning.
+3. Conversation creates brand and growth assets.
+4. Builder outlines the minimum viable implementation path.
+5. Compliance flags legal, privacy, ad, and platform risks for human review.
+
+The result is not just a chat response. It is a working repository of decisions and deliverables inside your workspace.
+
+## What You Get
+
+- a 5-agent AI team with clear roles
+- Discord and Slack support
+- OpenAI, Anthropic, and local LLM support
+- a workspace template for strategy, research, growth, implementation, and validation
+- cron-driven morning briefings, nightly reviews, and weekly progress reports
+- editable `SOUL.md` files for each agent
 - Docker-based local deployment
+
+## Workspace Output
+
+ChatBizOS writes its progress into files you can review and edit:
+
+```text
+workspace/
+  STATUS.md
+  MILESTONES.md
+  LEARNINGS.md
+  01_strategy/
+  02_research/
+  03_offer/
+  04_growth/
+  05_implementation/
+  06_operations/
+  07_validation/
+```
+
+That structure is the point. It gives you continuity across sessions and keeps decisions visible.
 
 ## Quick Start (Docker)
 
 ```bash
-git clone https://github.com/<owner>/chatbizos
+git clone https://github.com/toshisasak1/chatbizos
 cd chatbizos
 cp .env.example .env
-# Edit .env with your API keys and chat credentials
+# Edit .env with your LLM and chat credentials
 docker compose up -d
 ```
 
-After the container starts, use your configured Discord or Slack channel to talk to the Producer agent.
+After the container starts, send a message in your configured Discord or Slack channel.
+
+## Guided Setup
+
+If you prefer prompts instead of editing `.env` manually:
+
+```bash
+./setup/setup.sh
+```
+
+Then validate the environment:
+
+```bash
+./setup/validate.sh
+```
 
 ## Architecture
 
@@ -68,27 +127,28 @@ Workspace files + logs
 ## Agents
 
 ### Producer
-The orchestrator. Reads status, prioritizes tasks, delegates work, evaluates output quality, updates logs, and asks the human for decisions when needed.
+Owns orchestration. Reads status, chooses priorities, delegates work, evaluates outputs, updates logs, and decides when the human must step in.
 
 ### Concept
-The business strategist. Defines the market, offer, ICP, positioning, pricing approach, and research direction.
+Owns business strategy. Works on market framing, ICP, offer design, pricing, positioning, and research synthesis.
 
 ### Conversation
-The growth and content lead. Creates messaging, content, customer scripts, and brand voice assets.
+Owns messaging and growth. Produces brand voice, content plans, scripts, and marketing assets.
 
 ### Builder
-The implementation lead. Recommends practical tool stacks and writes step-by-step setup instructions for non-engineers.
+Owns implementation planning. Recommends practical tools and writes steps a non-engineer can actually follow.
 
 ### Compliance
-The legal and risk checker. Flags privacy, advertising, platform, and consumer protection risks and always escalates them for human review.
+Owns legal and risk review. Flags privacy, platform, advertising, and consumer-protection concerns. Compliance items are always escalated to a human.
 
 ## Configuration
 
-Key configuration files:
-- `config/chatbizos.yaml` - high-level project, agent, provider, and channel settings
-- `config/openclaw-config.json` - generated OpenClaw runtime configuration template
-- `config/cron.yaml` - scheduled briefings and reviews
-- `.env` - secrets and deployment-specific environment variables
+Key files:
+
+- `config/chatbizos.yaml`: project, agent, provider, and channel settings
+- `config/openclaw-config.json`: OpenClaw runtime template
+- `config/cron.yaml`: scheduled briefings and reviews
+- `.env`: deployment-specific credentials and environment variables
 
 ## Documentation
 
@@ -97,10 +157,22 @@ Key configuration files:
 - `docs/agent-customization.md`
 - `docs/llm-providers.md`
 - `docs/troubleshooting.md`
+- `README.ja.md` and `docs/ja/` for Japanese documentation
+
+## Repository Structure
+
+```text
+agents/              Agent definitions
+config/              Runtime and schedule configuration
+docs/                Project documentation
+examples/            Example use cases
+setup/               Setup, entrypoint, and validation scripts
+workspace-template/  Initial business workspace structure
+```
 
 ## Contributing
 
-Contributions are welcome. Please read `CONTRIBUTING.md` before opening a pull request.
+Contributions are welcome. Read `CONTRIBUTING.md` before opening a pull request.
 
 ## License
 
