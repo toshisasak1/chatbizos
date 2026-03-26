@@ -1,5 +1,7 @@
 # ChatBizOS
 
+[English](README.md) | [日本語](README.ja.md)
+
 ChatBizOS is an open-source multi-agent business building framework built on OpenClaw. It gives non-technical entrepreneurs a pre-configured AI team they can talk to through Discord or Slack. The team helps turn a business idea into strategy, content, implementation plans, and structured progress.
 
 ## What is ChatBizOS
