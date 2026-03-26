@@ -1,0 +1,63 @@
+{
+  "gateway": {
+    "bind": "0.0.0.0",
+    "port": 18789
+  },
+  "runtime": {
+    "toolProfile": "full",
+    "agentToAgent": true
+  },
+  "memory": {
+    "search": {
+      "fts": true
+    }
+  },
+  "plugins": {
+    "entries": {
+      "discord": {
+        "enabled": true,
+        "botToken": "${DISCORD_BOT_TOKEN}",
+        "guildId": "${DISCORD_GUILD_ID}",
+        "channelId": "${DISCORD_CHANNEL_ID}"
+      },
+      "slack": {
+        "enabled": false,
+        "botToken": "${SLACK_BOT_TOKEN}",
+        "appToken": "${SLACK_APP_TOKEN}",
+        "channelId": "${SLACK_CHANNEL_ID}"
+      }
+    }
+  },
+  "agents": [
+    {
+      "id": "producer",
+      "label": "Producer",
+      "workspace": "/opt/chatbizos/workspace",
+      "soul": "/opt/chatbizos/agents/producer/SOUL.md"
+    },
+    {
+      "id": "concept",
+      "label": "Concept",
+      "workspace": "/opt/chatbizos/workspace",
+      "soul": "/opt/chatbizos/agents/concept/SOUL.md"
+    },
+    {
+      "id": "conversation",
+      "label": "Conversation",
+      "workspace": "/opt/chatbizos/workspace",
+      "soul": "/opt/chatbizos/agents/conversation/SOUL.md"
+    },
+    {
+      "id": "builder",
+      "label": "Builder",
+      "workspace": "/opt/chatbizos/workspace",
+      "soul": "/opt/chatbizos/agents/builder/SOUL.md"
+    },
+    {
+      "id": "compliance",
+      "label": "Compliance",
+      "workspace": "/opt/chatbizos/workspace",
+      "soul": "/opt/chatbizos/agents/compliance/SOUL.md"
+    }
+  ]
+}

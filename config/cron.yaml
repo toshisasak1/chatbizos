@@ -1,0 +1,18 @@
+cron:
+  morning_briefing:
+    schedule: "0 9 * * *"
+    timezone: "${TIMEZONE:-UTC}"
+    agent: producer
+    message: "Generate morning briefing. Read STATUS.md, task_queue.md, and current blockers. Summarize progress and recommend today's priorities."
+
+  nightly_meta_review:
+    schedule: "0 3 * * *"
+    timezone: "${TIMEZONE:-UTC}"
+    agent: producer
+    message: "Run nightly meta review. Check recent outputs, identify process improvements, and update LEARNINGS.md where useful."
+
+  weekly_progress_report:
+    schedule: "0 10 * * 1"
+    timezone: "${TIMEZONE:-UTC}"
+    agent: producer
+    message: "Generate the weekly progress report. Summarize completed milestones, open blockers, risks, and next week's priorities."

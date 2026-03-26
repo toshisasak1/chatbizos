@@ -1,0 +1,11 @@
+.env
+node_modules/
+__pycache__/
+.DS_Store
+*.log
+workspace/
+workspace-data/
+.openclaw/
+data/
+coverage/
+dist/
