@@ -19,8 +19,9 @@ if [ -f ./.env ]; then
 fi
 
 OPENCLAW_HOME="${OPENCLAW_HOME:-/opt/chatbizos}"
+OPENCLAW_STATE_DIR="${OPENCLAW_STATE_DIR:-$OPENCLAW_HOME/.openclaw}"
 PORT="${OPENCLAW_PORT:-18789}"
-GENERATED_CONFIG="${OPENCLAW_HOME}/config/generated-openclaw-config.json"
+GENERATED_CONFIG="${OPENCLAW_STATE_DIR}/runtime/generated-openclaw-config.json"
 CRON_TEMPLATE="${OPENCLAW_HOME}/config/cron.yaml"
 TMP_DIR="${TMPDIR:-/tmp}/chatbizos-cron"
 CHANNEL_KIND="${CHAT_CHANNEL:-discord}"

@@ -22,7 +22,7 @@ OPENCLAW_HOME="${OPENCLAW_HOME:-/opt/chatbizos}"
 OPENCLAW_STATE_DIR="${OPENCLAW_STATE_DIR:-$OPENCLAW_HOME/.openclaw}"
 WORKSPACE_DIR="${WORKSPACE_DIR:-$OPENCLAW_HOME/workspace}"
 PORT="${OPENCLAW_PORT:-18789}"
-GENERATED_CONFIG="${OPENCLAW_HOME}/config/generated-openclaw-config.json"
+GENERATED_CONFIG="${OPENCLAW_STATE_DIR}/runtime/generated-openclaw-config.json"
 STATUS_GATEWAY="FAIL"
 STATUS_CHANNEL="FAIL"
 STATUS_LLM="FAIL"
@@ -47,15 +47,19 @@ if command -v curl >/dev/null 2>&1; then
 fi
 
 if command -v openclaw >/dev/null 2>&1; then
-  if openclaw channels status --probe >/tmp/chatbizos-channels-status.txt 2>&1; then
-    STATUS_CHANNEL="OK"
-    DETAIL_CHANNEL="$(tr '\n' ' ' </tmp/chatbizos-channels-status.txt | sed 's/[[:space:]]\+/ /g' | cut -c1-180)"
+  if openclaw channels status --probe --json >/tmp/chatbizos-channels-status.json 2>/tmp/chatbizos-channels-status.err; then
+    channel_eval="$(
+      node -e "const fs=require('node:fs'); const data=JSON.parse(fs.readFileSync(process.argv[1],'utf8')); const order=data.channelOrder||[]; if (!order.length) { process.stdout.write('FAIL|No channels configured'); process.exit(0); } const id=order[0]; const info=((data.channels||{})[id])||{}; const probe=info.probe||{}; const parts=[id, info.configured ? 'configured' : 'not-configured', info.running ? 'running' : 'stopped']; if (typeof info.lastError === 'string' && info.lastError) parts.push('error:' + info.lastError); if (probe.ok === true) { process.stdout.write('OK|' + parts.join(', ') + ', probe:ok'); } else if (info.configured) { const probeError=probe.error ? ('probe:' + probe.error) : 'probe:failed'; process.stdout.write('CONFIGURED|' + parts.join(', ') + ', ' + probeError); } else { process.stdout.write('FAIL|' + parts.join(', ')); }" \
+        /tmp/chatbizos-channels-status.json
+    )"
+    STATUS_CHANNEL="${channel_eval%%|*}"
+    DETAIL_CHANNEL="${channel_eval#*|}"
   elif [ "${CHAT_CHANNEL:-discord}" = "discord" ] && [ -n "${DISCORD_BOT_TOKEN:-}" ]; then
     STATUS_CHANNEL="CONFIGURED"
-    DETAIL_CHANNEL="Discord token present but live probe failed"
+    DETAIL_CHANNEL="Discord token present but channel status probe failed"
   elif [ "${CHAT_CHANNEL:-discord}" = "slack" ] && [ -n "${SLACK_BOT_TOKEN:-}" ] && [ -n "${SLACK_APP_TOKEN:-}" ]; then
     STATUS_CHANNEL="CONFIGURED"
-    DETAIL_CHANNEL="Slack tokens present but live probe failed"
+    DETAIL_CHANNEL="Slack tokens present but channel status probe failed"
   else
     DETAIL_CHANNEL="Channel credentials missing"
   fi

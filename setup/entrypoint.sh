@@ -6,11 +6,12 @@ WORKSPACE_DIR="${WORKSPACE_DIR:-$OPENCLAW_HOME/workspace}"
 OPENCLAW_STATE_DIR="${OPENCLAW_STATE_DIR:-$OPENCLAW_HOME/.openclaw}"
 CONFIG_DIR="$OPENCLAW_HOME/config"
 TEMPLATE_DIR="$OPENCLAW_HOME/workspace-template"
-OPENCLAW_CONFIG="$CONFIG_DIR/generated-openclaw-config.json"
-GATEWAY_TOKEN_FILE="$CONFIG_DIR/generated-gateway-token.txt"
+RUNTIME_DIR="$OPENCLAW_STATE_DIR/runtime"
+OPENCLAW_CONFIG="$RUNTIME_DIR/generated-openclaw-config.json"
+GATEWAY_TOKEN_FILE="$RUNTIME_DIR/generated-gateway-token.txt"
 AGENT_IDS="producer concept conversation builder compliance"
 
-mkdir -p "$WORKSPACE_DIR" "$OPENCLAW_STATE_DIR" "$CONFIG_DIR"
+mkdir -p "$WORKSPACE_DIR" "$OPENCLAW_STATE_DIR" "$CONFIG_DIR" "$RUNTIME_DIR"
 
 copy_if_missing() {
   src_dir="$1"
@@ -254,4 +255,4 @@ if [ -f "$CONFIG_DIR/cron.yaml" ]; then
   echo "Register scheduled jobs with: /opt/chatbizos/setup/register-cron.sh"
 fi
 
-exec openclaw gateway start
+exec openclaw gateway run
